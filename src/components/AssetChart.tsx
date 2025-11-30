@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -22,8 +22,23 @@ interface AssetChartProps {
 }
 
 export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }: AssetChartProps) {
+    const getDefaultRange = () => {
+        const now = new Date();
+        const day = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+        const hour = now.getHours();
+
+        // Saturday >= 6am
+        if (day === 6 && hour >= 6) return '1mo';
+        // Sunday (all day)
+        if (day === 0) return '1mo';
+        // Monday < 6am
+        if (day === 1 && hour < 6) return '1mo';
+
+        return '1d';
+    };
+
     const [data, setData] = useState<HistoricalData[]>([]);
-    const [range, setRange] = useState<'1d' | '1mo' | '1y' | 'ytd'>('1mo');
+    const [range, setRange] = useState<'1d' | '1mo' | '1y' | 'ytd'>(getDefaultRange);
     const [loading, setLoading] = useState(false);
     const [assetName, setAssetName] = useState<string>(symbol);
 
@@ -68,6 +83,46 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
             fetchAssetName();
         }
     }, [symbol]);
+
+    // Track user interaction
+    const lastInteractionTime = useRef<number>(Date.now());
+
+    useEffect(() => {
+        const updateInteractionTime = () => {
+            lastInteractionTime.current = Date.now();
+        };
+
+        window.addEventListener('mousemove', updateInteractionTime);
+        window.addEventListener('keydown', updateInteractionTime);
+        window.addEventListener('click', updateInteractionTime);
+        window.addEventListener('scroll', updateInteractionTime);
+
+        return () => {
+            window.removeEventListener('mousemove', updateInteractionTime);
+            window.removeEventListener('keydown', updateInteractionTime);
+            window.removeEventListener('click', updateInteractionTime);
+            window.removeEventListener('scroll', updateInteractionTime);
+        };
+    }, []);
+
+    // Check every hour if we should reset to default
+    useEffect(() => {
+        const checkInterval = setInterval(() => {
+            const now = Date.now();
+            const timeSinceInteraction = now - lastInteractionTime.current;
+            const thirtyMinutes = 30 * 60 * 1000;
+
+            if (timeSinceInteraction > thirtyMinutes) {
+                const newDefault = getDefaultRange();
+                setRange(prev => {
+                    if (prev !== newDefault) return newDefault;
+                    return prev;
+                });
+            }
+        }, 60 * 60 * 1000); // Check every hour
+
+        return () => clearInterval(checkInterval);
+    }, []);
 
     const formatXAxis = (tickItem: string) => {
         const date = new Date(tickItem);

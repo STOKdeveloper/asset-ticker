@@ -5,8 +5,8 @@ import Ticker from '@/components/Ticker';
 import AssetChart from '@/components/AssetChart';
 
 // Sample data - in a real app these might come from a config or user input
-const STOCKS = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'AVGO', 'META'];
-const COMMODITIES = ['GC=F', 'SI=F', 'CL=F', 'NG=F', 'HG=F', 'ETH-GBP', 'BTC-GBP'];
+const STOCKS = ['AGNC', 'ORC', 'SEIT', 'MNG.L', 'PHNX.L', 'RIO.L', 'TW.L', 'SUPR.L', 'AGNC.L', 'ABDN.L', 'EMG.L', 'ENOG.L', 'LGEN.L', 'ORIT.L', 'DUKE.L'];
+const COMMODITIES = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'AVGO', 'META', 'GC=F', 'SI=F', 'ETH-GBP', 'BTC-GBP'];
 
 export default function Home() {
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
