@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Ticker from '@/components/Ticker';
+import Header from '@/components/Header';
+import TickersSection from '@/components/TickersSection';
 import AssetChart from '@/components/AssetChart';
+import AssetBoard from '@/components/AssetBoard';
 
 // Sample data - in a real app these might come from a config or user input
 const STOCKS = ['AGNC', 'ORC', 'SEIT', 'MNG.L', 'PHNX.L', 'RIO.L', 'TW.L', 'SUPR.L', 'AGNC.L', 'ABDN.L', 'EMG.L', 'ENOG.L', 'LGEN.L', 'ORIT.L', 'DUKE.L'];
@@ -11,6 +13,7 @@ const COMMODITIES = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'AVGO', 'META', 'G
 export default function Home() {
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
   const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [showBoard, setShowBoard] = useState<boolean>(false);
 
   useEffect(() => {
     if (isPaused) return;
@@ -30,7 +33,14 @@ export default function Home() {
   const handleSymbolClick = (symbol: string) => {
     setSelectedSymbol(symbol);
     setIsPaused(true);
+    setShowBoard(false); // Switch to chart view when asset is clicked
   };
+
+  const toggleView = () => {
+    setShowBoard(!showBoard);
+  };
+
+  const allSymbols = [...STOCKS, ...COMMODITIES];
 
   return (
     <main className="h-dvh bg-[#050505] flex flex-col relative overflow-hidden">
@@ -40,35 +50,36 @@ export default function Home() {
 
       {/* Header / Tickers */}
       <div className="z-10 flex flex-col gap-1 pt-4 shrink-0">
-        <h1 className="text-center text-2xl font-bold tracking-widest text-white/20 mb-4 uppercase">Asset Ticker</h1>
+        <Header onClick={toggleView} />
 
-        <Ticker
-          symbols={STOCKS}
-          onSymbolClick={handleSymbolClick}
-          speed={40}
-          height={15}
-        />
-
-        <Ticker
-          symbols={COMMODITIES}
-          onSymbolClick={handleSymbolClick}
-          speed={40}
-          height={10}
-        />
+        {!showBoard && (
+          <TickersSection
+            stocks={STOCKS}
+            commodities={COMMODITIES}
+            onSymbolClick={handleSymbolClick}
+          />
+        )}
       </div>
-
-      {/* Spacer for 10px gap */}
-      <div className="h-[10px] shrink-0" />
 
       {/* Main Content Area */}
       <div className="flex-1 container mx-auto px-4 pb-4 z-10 flex flex-col items-center min-h-0">
         <div className="w-full max-w-5xl h-full">
-          <AssetChart
-            symbol={selectedSymbol}
-            isPaused={isPaused}
-            onTogglePause={() => setIsPaused(!isPaused)}
-            onPause={() => setIsPaused(true)}
-          />
+          {showBoard ? (
+            <AssetBoard
+              symbolGroups={[
+                { label: 'Stocks', symbols: STOCKS },
+                { label: 'Commodities', symbols: COMMODITIES }
+              ]}
+              onAssetClick={handleSymbolClick}
+            />
+          ) : (
+            <AssetChart
+              symbol={selectedSymbol}
+              isPaused={isPaused}
+              onTogglePause={() => setIsPaused(!isPaused)}
+              onPause={() => setIsPaused(true)}
+            />
+          )}
         </div>
       </div>
     </main>
