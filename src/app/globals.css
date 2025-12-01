@@ -13,7 +13,7 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   overflow: hidden;
-  height: 100vh;
+  height: 100dvh;
   width: 100vw;
   margin: 0;
   padding: 0;
@@ -24,6 +24,7 @@ body {
     color: #00ff9d;
     text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
   }
+
   .text-neon-red {
     color: #ff0055;
     text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
@@ -31,13 +32,23 @@ body {
 }
 
 @keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes scroll-reverse {
-  0% { transform: translateX(-50%); }
-  100% { transform: translateX(0); }
+  0% {
+    transform: translateX(-50%);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .animate-scroll {

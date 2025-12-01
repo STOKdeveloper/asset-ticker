@@ -33,7 +33,7 @@ export default function Home() {
   };
 
   return (
-    <main className="h-screen bg-[#050505] flex flex-col relative overflow-hidden">
+    <main className="h-dvh bg-[#050505] flex flex-col relative overflow-hidden">
       {/* Ambient Background Effects */}
       <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-blue-900/20 rounded-full blur-[120px] pointer-events-none" />

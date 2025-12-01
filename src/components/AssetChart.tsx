@@ -137,11 +137,11 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
     return (
         <div className="w-full h-full flex flex-col bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-6 shadow-2xl">
             <div className="mb-8 grid grid-cols-3 items-center">
-                <div className="justify-self-start">
+                <div className="justify-self-start pl-2">
                     <h2 className="text-3xl font-bold text-white tracking-tight">{assetName}</h2>
                 </div>
 
-                <div className="flex gap-2 justify-self-center">
+                <div className="flex gap-4 justify-self-center">
                     {(['1d', '1mo', 'ytd', '1y'] as const).map((r) => (
                         <button
                             key={r}
@@ -150,21 +150,22 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
                                 onPause?.();
                             }}
                             className={cn(
-                                "px-2 py-1 text-sm font-medium transition-all",
+                                "h-10 px-4 text-sm font-medium transition-all flex items-center justify-center rounded-lg",
                                 range === r
-                                    ? "text-blue-400"
-                                    : "text-white/40 hover:text-white/70"
+                                    ? "text-blue-400 bg-blue-500/10 border border-blue-500/20 font-bold shadow-[0_0_10px_rgba(59,130,246,0.2)]"
+                                    : "text-white/40 hover:text-white hover:bg-white/5 border border-transparent"
                             )}
+                            style={range === r ? { color: '#60a5fa', borderColor: 'rgba(59,130,246,0.5)', backgroundColor: 'rgba(59,130,246,0.1)' } : undefined}
                         >
                             {r.toUpperCase()}
                         </button>
                     ))}
                 </div>
 
-                <div className="justify-self-end">
+                <div className="justify-self-end pr-2">
                     <button
                         onClick={onTogglePause}
-                        className="text-white/60 hover:text-white transition-colors p-2"
+                        className="h-10 w-10 flex items-center justify-center rounded-lg text-white/60 hover:text-white transition-colors hover:bg-white/5"
                         aria-label={isPaused ? "Play" : "Pause"}
                     >
                         {isPaused ? (
