@@ -150,12 +150,12 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
                                 onPause?.();
                             }}
                             className={cn(
-                                "h-10 px-4 text-sm font-medium transition-all flex items-center justify-center rounded-lg",
+                                "h-10 px-4 text-sm font-medium transition-all flex items-center justify-center rounded-none",
                                 range === r
-                                    ? "text-blue-400 bg-blue-500/10 border border-blue-500/20 font-bold shadow-[0_0_10px_rgba(59,130,246,0.2)]"
+                                    ? "text-blue-500 bg-blue-600/20 border border-blue-600/30 font-bold shadow-[0_0_10px_rgba(37,99,235,0.2)]"
                                     : "text-white/40 hover:text-white hover:bg-white/5 border border-transparent"
                             )}
-                            style={range === r ? { color: '#60a5fa', borderColor: 'rgba(59,130,246,0.5)', backgroundColor: 'rgba(59,130,246,0.1)' } : undefined}
+                            style={range === r ? { color: '#3b82f6', borderColor: 'rgba(37,99,235,0.5)', backgroundColor: 'rgba(37,99,235,0.2)' } : undefined}
                         >
                             {r.toUpperCase()}
                         </button>
@@ -165,7 +165,7 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
                 <div className="justify-self-end pr-2">
                     <button
                         onClick={onTogglePause}
-                        className="h-10 w-10 flex items-center justify-center rounded-lg text-white/60 hover:text-white transition-colors hover:bg-white/5"
+                        className="h-10 w-10 flex items-center justify-center rounded-none text-white/60 hover:text-white transition-colors hover:bg-white/5"
                         aria-label={isPaused ? "Play" : "Pause"}
                     >
                         {isPaused ? (
