@@ -38,7 +38,7 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
     };
 
     const [data, setData] = useState<HistoricalData[]>([]);
-    const [range, setRange] = useState<'1d' | '1mo' | '1y' | 'ytd'>(getDefaultRange);
+    const [range, setRange] = useState<'1d' | '5d' | '1mo' | 'ytd' | '1y'>(getDefaultRange);
     const [loading, setLoading] = useState(false);
     const [assetName, setAssetName] = useState<string>(symbol);
 
@@ -127,7 +127,7 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
     const formatXAxis = (tickItem: string) => {
         const date = new Date(tickItem);
         if (range === '1d') return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        if (range === '1mo') return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+        if (range === '5d' || range === '1mo') return date.toLocaleDateString([], { month: 'short', day: 'numeric' });
         return date.toLocaleDateString([], { month: 'short', year: '2-digit' });
     };
 
@@ -135,14 +135,14 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
     const color = isPositive ? '#00ff9d' : '#ff0055'; // Neon Green / Neon Red
 
     return (
-        <div className="w-full h-full flex flex-col bg-white/5 backdrop-blur-md rounded-3xl border border-white/10 p-6 shadow-2xl">
+        <div className="w-full h-full flex flex-col bg-white/5 backdrop-blur-md rounded-3xl py-6 px-12 shadow-2xl">
             <div className="mb-8 grid grid-cols-3 items-center">
-                <div className="justify-self-start pl-2">
-                    <h2 className="text-3xl font-bold text-white tracking-tight">{assetName}</h2>
+                <div className="justify-self-start">
+                    <h2 className="text-3xl font-bold text-white tracking-tight ml-8">{assetName}</h2>
                 </div>
 
                 <div className="flex gap-4 justify-self-center">
-                    {(['1d', '1mo', 'ytd', '1y'] as const).map((r) => (
+                    {(['1d', '5d', '1mo', 'ytd', '1y'] as const).map((r) => (
                         <button
                             key={r}
                             onClick={() => {
@@ -150,7 +150,7 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
                                 onPause?.();
                             }}
                             className={cn(
-                                "h-10 px-4 text-sm font-medium transition-all flex items-center justify-center rounded-none",
+                                "h-12 px-6 text-lg font-medium transition-all flex items-center justify-center rounded-none",
                                 range === r
                                     ? "text-blue-500 bg-blue-600/20 border border-blue-600/30 font-bold shadow-[0_0_10px_rgba(37,99,235,0.2)]"
                                     : "text-white/40 hover:text-white hover:bg-white/5 border border-transparent"
@@ -165,7 +165,7 @@ export default function AssetChart({ symbol, isPaused, onTogglePause, onPause }:
                 <div className="justify-self-end pr-2">
                     <button
                         onClick={onTogglePause}
-                        className="h-10 w-10 flex items-center justify-center rounded-none text-white/60 hover:text-white transition-colors hover:bg-white/5"
+                        className="h-12 w-12 flex items-center justify-center rounded-none text-white/60 hover:text-white transition-colors hover:bg-white/5"
                         aria-label={isPaused ? "Play" : "Pause"}
                     >
                         {isPaused ? (

@@ -20,6 +20,10 @@ export async function GET(request: Request) {
             period1 = new Date(now.getTime() - 24 * 60 * 60 * 1000);
             interval = '1m'; // Intraday needs granular data
             break;
+        case '5d':
+            period1 = new Date(now.getTime() - 5 * 24 * 60 * 60 * 1000);
+            interval = '1m'; // Use minute intervals for 5 days
+            break;
         case '1mo':
             period1 = new Date(now.setMonth(now.getMonth() - 1));
             interval = '1d';
