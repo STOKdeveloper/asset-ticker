@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import TickerItem from './TickerItem';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -26,6 +27,7 @@ interface TickerProps {
 export default function Ticker({ symbols, onSymbolClick, speed = 20, direction = 'left', height = 24 }: TickerProps) {
     const [quotes, setQuotes] = useState<Quote[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isPaused, setIsPaused] = useState(false);
 
     useEffect(() => {
         const fetchQuotes = async () => {
@@ -47,20 +49,19 @@ export default function Ticker({ symbols, onSymbolClick, speed = 20, direction =
         return () => clearInterval(interval);
     }, [symbols]);
 
+    const handleItemClick = (symbol: string) => {
+        setIsPaused(true);
+        onSymbolClick(symbol);
+        setTimeout(() => setIsPaused(false), 1000);
+    };
+
     if (loading) return <div className="h-64 bg-gray-900/50 animate-pulse w-full my-2" />;
 
     // Duplicate content for seamless loop
     const content = [...quotes, ...quotes, ...quotes];
 
     // Dynamic sizing
-    const symbolSize = `${height * 0.4}vh`;
-    const priceSize = `${height * 0.25}vh`;
-    const percentSize = `${height * 0.15}vh`;
     const itemGap = `${height * 0.0}vh`; // Gap between ticker items
-    const contentGap = `${height * 0.1}vh`; // Gap inside the button
-    const symbolGap = `${height * 0.04}vh`; // Gap between arrow and symbol
-    const priceGap = `${height * 0.07}vh`; // Gap between price and percentage
-    const cardPadding = `${height * 0.2}vh`; // Horizontal padding
 
     return (
         <div
@@ -69,50 +70,24 @@ export default function Ticker({ symbols, onSymbolClick, speed = 20, direction =
         >
             <div
                 className={cn(
-                    "flex whitespace-nowrap animate-scroll hover:pause",
+                    "flex whitespace-nowrap animate-scroll",
                     direction === 'right' && "animate-scroll-reverse"
                 )}
                 style={{
                     animationDuration: `${speed}s`,
                     gap: itemGap,
+                    animationPlayState: isPaused ? 'paused' : 'running'
                 }}
             >
                 {content.map((quote, i) => (
-                    <button
+                    <TickerItem
                         key={`${quote.symbol}-${i}`}
-                        onClick={() => onSymbolClick(quote.symbol)}
-                        className="flex flex-col items-center transition-transform hover:scale-105 active:scale-95"
-                        style={{
-                            gap: contentGap,
-                            paddingLeft: cardPadding,
-                            paddingRight: cardPadding
-                        }}
-                    >
-                        <span
-                            className="font-bold text-white/90 flex items-center"
-                            style={{ fontSize: symbolSize, gap: symbolGap }}
-                        >
-                            <span className={quote.regularMarketChangePercent >= 0 ? "text-neon-green" : "text-neon-red"}>
-                                {quote.regularMarketChangePercent >= 0 ? '▲' : '▼'}
-                            </span>
-                            {quote.symbol}
-                        </span>
-                        <div
-                            className={cn(
-                                "flex items-center font-mono",
-                                quote.regularMarketChangePercent >= 0 ? "text-neon-green" : "text-neon-red"
-                            )}
-                            style={{ fontSize: priceSize }}
-                        >
-                            {quote.regularMarketPrice?.toFixed(2)}
-                            <span
-                                className="opacity-80"
-                                style={{ fontSize: percentSize, marginLeft: priceGap }}
-                            >
-                                ({Math.abs(quote.regularMarketChangePercent)?.toFixed(2)}%)
-                            </span>
-                        </div>
-                    </button>
+                        symbol={quote.symbol}
+                        price={quote.regularMarketPrice}
+                        changePercent={quote.regularMarketChangePercent}
+                        onClick={() => handleItemClick(quote.symbol)}
+                        height={height}
+                    />
                 ))}
             </div>
 
