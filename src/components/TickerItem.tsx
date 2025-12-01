@@ -26,9 +26,11 @@ export default function TickerItem({ symbol, price, changePercent, onClick, heig
     const cardPadding = `${height * 0.2}vh`; // Horizontal padding
 
     return (
-        <button
+        <div
             onClick={onClick}
-            className="flex flex-col items-center transition-transform hover:scale-105 active:scale-95"
+            role="button"
+            tabIndex={0}
+            className="flex flex-col items-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
             style={{
                 gap: contentGap,
                 paddingLeft: cardPadding,
@@ -59,6 +61,6 @@ export default function TickerItem({ symbol, price, changePercent, onClick, heig
                     ({Math.abs(changePercent)?.toFixed(2)}%)
                 </span>
             </div>
-        </button>
+        </div>
     );
 }
