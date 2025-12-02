@@ -1,0 +1,65 @@
+{
+    "symbolGroups": [
+        {
+            "label": "Stocks",
+            "symbols": [
+                "AGNC",
+                "ORC",
+                "SEIT.L",
+                "MNG.L",
+                "PHNX.L",
+                "RIO.L",
+                "TW.L",
+                "SUPR.L",
+                "SDIP.L",
+                "ABDN.L",
+                "EMG.L",
+                "ENOG.L",
+                "LGEN.L",
+                "ORIT.L",
+                "DUKE.L"
+            ]
+        },
+        {
+            "label": "Commodities",
+            "symbols": [
+                "GC=F",
+                "SI=F"
+            ]
+        },
+        {
+            "label": "Crypto",
+            "symbols": [
+                "ETH-GBP",
+                "ADA-GBP",
+                "XRP-GBP",
+                "LINK-GBP",
+                "SHIB-GBP",
+                "BTC-GBP"
+            ]
+        },
+        {
+            "label": "SIPP",
+            "symbols": [
+                "AAPL",
+                "MSFT",
+                "GOOGL",
+                "AMZN",
+                "NVDA",
+                "AVGO",
+                "META",
+                "TSMWF",
+                "MU",
+                "SHEL"
+            ]
+        },
+        {
+            "label": "Indices",
+            "symbols": [
+                "^FTSE",
+                "^GSPC",
+                "^DJI"
+            ]
+        }
+    ]
+}

@@ -5,12 +5,14 @@ import Header from '@/components/Header';
 import TickersSection from '@/components/TickersSection';
 import AssetChart from '@/components/AssetChart';
 import AssetBoard from '@/components/AssetBoard';
-
-// Sample data - in a real app these might come from a config or user input
-const STOCKS = ['AGNC', 'ORC', 'SEIT', 'MNG.L', 'PHNX.L', 'RIO.L', 'TW.L', 'SUPR.L', 'AGNC.L', 'ABDN.L', 'EMG.L', 'ENOG.L', 'LGEN.L', 'ORIT.L', 'DUKE.L'];
-const COMMODITIES = ['AAPL', 'MSFT', 'GOOGL', 'AMZN', 'NVDA', 'AVGO', 'META', 'GC=F', 'SI=F', 'ETH-GBP', 'BTC-GBP'];
+import symbolsData from '@/data/symbols.json';
 
 export default function Home() {
+  // Extract symbol arrays from JSON data
+  const stocks = symbolsData.symbolGroups.find(g => g.label === 'Stocks')?.symbols || [];
+  const commodities = symbolsData.symbolGroups.find(g => g.label === 'Commodities')?.symbols || [];
+  const allSymbols = symbolsData.symbolGroups.flatMap(g => g.symbols);
+
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [showBoard, setShowBoard] = useState<boolean>(false);
@@ -18,7 +20,7 @@ export default function Home() {
   useEffect(() => {
     if (isPaused) return;
 
-    const allSymbols = [...STOCKS, ...COMMODITIES];
+    // allSymbols is now defined at component level
     const interval = setInterval(() => {
       setSelectedSymbol((prev) => {
         const currentIndex = allSymbols.indexOf(prev);
@@ -40,7 +42,7 @@ export default function Home() {
     setShowBoard(!showBoard);
   };
 
-  const allSymbols = [...STOCKS, ...COMMODITIES];
+  // allSymbols is now defined at component level
 
   return (
     <main className="h-dvh bg-[#050505] flex flex-col relative overflow-hidden">
@@ -54,8 +56,8 @@ export default function Home() {
 
         {!showBoard && (
           <TickersSection
-            stocks={STOCKS}
-            commodities={COMMODITIES}
+            stocks={stocks}
+            commodities={commodities}
             onSymbolClick={handleSymbolClick}
           />
         )}
@@ -67,8 +69,7 @@ export default function Home() {
           {showBoard ? (
             <AssetBoard
               symbolGroups={[
-                { label: 'Stocks', symbols: STOCKS },
-                { label: 'Commodities', symbols: COMMODITIES }
+                ...symbolsData.symbolGroups
               ]}
               onAssetClick={handleSymbolClick}
             />

@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { quotefix } from '../utils/prices';
 
 function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
@@ -13,6 +14,9 @@ interface Quote {
     regularMarketPrice: number;
     regularMarketChangePercent: number;
     shortName?: string;
+    currency?: string;
+    exchange?: string;
+    quoteType?: string;
 }
 
 interface SymbolGroup {
@@ -79,10 +83,10 @@ export default function AssetBoard({ symbolGroups, onAssetClick }: AssetBoardPro
 
                 return (
                     <div key={group.label} className={groupIndex > 0 ? "mt-8" : ""}>
-                        <h2 className="text-2xl font-bold text-white/60 mb-4 uppercase tracking-wider">
+                        <h2 className="text-2xl font-bold text-white/60 mb-2 uppercase tracking-wider">
                             {group.label}
                         </h2>
-                        <div className="grid grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-4">
+                        <div className="grid grid-cols-8 md:grid-cols-12 lg:grid-cols-16 gap-4">
                             {groupQuotes.map((quote) => {
                                 const hasChanged = changedSymbols.has(quote.symbol);
                                 return (
@@ -103,7 +107,7 @@ export default function AssetBoard({ symbolGroups, onAssetClick }: AssetBoardPro
                                         </div>
                                         <div className="flex flex-col gap-1">
                                             <div className="text-white font-mono text-xl">
-                                                ${quote.regularMarketPrice?.toFixed(2)}
+                                                {quotefix(quote as any)}
                                             </div>
                                             <div
                                                 className={cn(
