@@ -58,7 +58,8 @@
             "symbols": [
                 "^FTSE",
                 "^GSPC",
-                "^DJI"
+                "^DJI",
+                "^SPTTGD"
             ]
         }
     ]

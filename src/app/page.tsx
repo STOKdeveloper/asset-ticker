@@ -6,11 +6,20 @@ import TickersSection from '@/components/TickersSection';
 import AssetChart from '@/components/AssetChart';
 import AssetBoard from '@/components/AssetBoard';
 import symbolsData from '@/data/symbols.json';
+import tickersData from '@/data/tickers.json';
 
 export default function Home() {
-  // Extract symbol arrays from JSON data
-  const stocks = symbolsData.symbolGroups.find(g => g.label === 'Stocks')?.symbols || [];
-  const commodities = symbolsData.symbolGroups.find(g => g.label === 'Commodities')?.symbols || [];
+  // Helper function to resolve ticker symbols from group names
+  const getTickerSymbols = (groupNames: string[]): string[] => {
+    return groupNames.flatMap(name => {
+      const group = symbolsData.symbolGroups.find(g => g.label === name);
+      return group?.symbols || [];
+    });
+  };
+
+  // Resolve ticker symbols from tickers.json configuration
+  const ticker1Symbols = getTickerSymbols(tickersData.tickerGroups[0].symbols);
+  const ticker2Symbols = getTickerSymbols(tickersData.tickerGroups[1].symbols);
   const allSymbols = symbolsData.symbolGroups.flatMap(g => g.symbols);
 
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
@@ -56,8 +65,8 @@ export default function Home() {
 
         {!showBoard && (
           <TickersSection
-            stocks={stocks}
-            commodities={commodities}
+            ticker1Symbols={ticker1Symbols}
+            ticker2Symbols={ticker2Symbols}
             onSymbolClick={handleSymbolClick}
           />
         )}

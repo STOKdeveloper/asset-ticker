@@ -1,0 +1,19 @@
+{
+    "tickerGroups": [
+        {
+            "label": "1",
+            "symbols": [
+                "Stocks",
+                "SIPP"
+            ]
+        },
+        {
+            "label": "2",
+            "symbols": [
+                "Commodities",
+                "Crypto",
+                "Indices"
+            ]
+        }
+    ]
+}

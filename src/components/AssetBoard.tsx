@@ -83,7 +83,7 @@ export default function AssetBoard({ symbolGroups, onAssetClick }: AssetBoardPro
 
                 return (
                     <div key={group.label} className={groupIndex > 0 ? "mt-8" : ""}>
-                        <h2 className="text-2xl font-bold text-white/60 mb-2 uppercase tracking-wider">
+                        <h2 className="text-3xl font-bold text-white/60 mb-2 uppercase tracking-wider">
                             {group.label}
                         </h2>
                         <div className="grid grid-cols-8 md:grid-cols-12 lg:grid-cols-16 gap-4">
