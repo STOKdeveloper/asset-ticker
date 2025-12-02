@@ -21,24 +21,6 @@
             ]
         },
         {
-            "label": "Commodities",
-            "symbols": [
-                "GC=F",
-                "SI=F"
-            ]
-        },
-        {
-            "label": "Crypto",
-            "symbols": [
-                "ETH-GBP",
-                "ADA-GBP",
-                "XRP-GBP",
-                "LINK-GBP",
-                "SHIB-GBP",
-                "BTC-GBP"
-            ]
-        },
-        {
             "label": "SIPP",
             "symbols": [
                 "AAPL",
@@ -54,12 +36,31 @@
             ]
         },
         {
+            "label": "Crypto",
+            "symbols": [
+                "ETH-GBP",
+                "ADA-GBP",
+                "XRP-GBP",
+                "LINK-GBP",
+                "SHIB-GBP",
+                "BTC-GBP"
+            ]
+        },
+        {
+            "label": "Commodities",
+            "symbols": [
+                "GC=F",
+                "SI=F"
+            ]
+        },
+        {
             "label": "Indices",
             "symbols": [
                 "^FTSE",
                 "^GSPC",
                 "^DJI",
-                "^SPTTGD"
+                "GBPEUR=X",
+                "GBPUSD=X"
             ]
         }
     ]

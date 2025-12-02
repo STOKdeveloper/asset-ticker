@@ -7,12 +7,14 @@ A real-time financial market display application built with Next.js, featuring l
 Asset Ticker is a full-screen financial dashboard that displays:
 - **Dual scrolling tickers** showing real-time stock and commodity prices
 - **Interactive price charts** with historical data visualization
+- **Asset Board** grid view for a comprehensive market overview
 - **Auto-rotating display** that cycles through different assets
 - **Kiosk mode support** for dedicated display setups
 
 ### Key Features
 
 - 📊 **Real-time Data**: Live price updates from Yahoo Finance API
+- 📱 **Asset Board**: Grid view showing all tracked assets with price changes and trends
 - 🎨 **Dynamic Scaling**: Tickers automatically scale based on configurable height parameters
 - 🔄 **Auto-refresh**: Price data updates every 60 seconds
 - 📈 **Historical Charts**: Interactive charts with multiple time ranges (1D, 1W, 1M, 3M, 1Y, YTD, 5Y)
@@ -22,12 +24,13 @@ Asset Ticker is a full-screen financial dashboard that displays:
 
 ### Tracked Assets
 
-**Stocks** (15vh ticker):
-- AAPL, MSFT, GOOGL, AMZN, NVDA, AVGO, META
+Assets are configured in `src/data/symbols.json`:
 
-**Commodities** (10vh ticker):
-- GC=F (Gold), SI=F (Silver), CL=F (Crude Oil), NG=F (Natural Gas)
-- HG=F (Copper), ETH-GBP (Ethereum), BTC-GBP (Bitcoin)
+- **Stocks**: Major tech and market leaders (AAPL, MSFT, NVDA, etc.)
+- **Commodities**: Gold, Silver
+- **Crypto**: ETH-GBP, BTC-GBP, etc.
+- **Indices**: FTSE 100, S&P 500, Dow Jones, NASDAQ
+- **SIPP**: Personal pension tracking assets
 
 ## Getting Started
 
@@ -80,29 +83,40 @@ src/
 │   │   └── history/route.ts    # Historical chart data API
 │   ├── page.tsx                 # Main dashboard page
 │   └── globals.css              # Global styles
-└── components/
-    ├── Ticker.tsx               # Scrolling ticker component
-    └── AssetChart.tsx           # Interactive chart component
+├── components/
+│   ├── Ticker.tsx               # Scrolling ticker component
+│   ├── AssetChart.tsx           # Interactive chart component
+│   └── AssetBoard.tsx           # Grid view component
+└── data/
+    ├── symbols.json             # Asset configuration
+    └── tickers.json             # Ticker grouping configuration
 ```
 
 ## Configuration
 
 ### Ticker Height
 
-Ticker heights can be adjusted in `src/app/page.tsx`:
+Ticker heights can be adjusted in `src/components/TickersSection.tsx`:
 
 ```typescript
-<Ticker symbols={STOCKS} height={15} />  // 15vh
-<Ticker symbols={COMMODITIES} height={10} />  // 10vh
+<Ticker symbols={ticker1Symbols} height={15} />  // 15vh
+<Ticker symbols={ticker2Symbols} height={10} />  // 10vh
 ```
 
 ### Symbols
 
-Edit the symbol arrays in `src/app/page.tsx`:
+Edit the symbol groups in `src/data/symbols.json`:
 
-```typescript
-const STOCKS = ['AAPL', 'MSFT', 'GOOGL', ...];
-const COMMODITIES = ['GC=F', 'SI=F', 'CL=F', ...];
+```json
+{
+  "symbolGroups": [
+    {
+      "label": "Stocks",
+      "symbols": ["AAPL", "MSFT", "GOOGL"]
+    },
+    ...
+  ]
+}
 ```
 
 ### Auto-rotation Speed
@@ -112,7 +126,7 @@ Adjust chart auto-rotation in `src/app/page.tsx`:
 ```typescript
 const interval = setInterval(() => {
   // Rotate symbols
-}, 10000); // 10 seconds
+}, 12000); // 12 seconds
 ```
 
 ## API Routes

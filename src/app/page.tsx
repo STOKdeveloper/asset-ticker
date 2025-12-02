@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Header from '@/components/Header';
 import TickersSection from '@/components/TickersSection';
 import AssetChart from '@/components/AssetChart';
@@ -18,9 +18,9 @@ export default function Home() {
   };
 
   // Resolve ticker symbols from tickers.json configuration
-  const ticker1Symbols = getTickerSymbols(tickersData.tickerGroups[0].symbols);
-  const ticker2Symbols = getTickerSymbols(tickersData.tickerGroups[1].symbols);
-  const allSymbols = symbolsData.symbolGroups.flatMap(g => g.symbols);
+  const ticker1Symbols = useMemo(() => getTickerSymbols(tickersData.tickerGroups[0].symbols), []);
+  const ticker2Symbols = useMemo(() => getTickerSymbols(tickersData.tickerGroups[1].symbols), []);
+  const allSymbols = useMemo(() => symbolsData.symbolGroups.flatMap(g => g.symbols), []);
 
   const [selectedSymbol, setSelectedSymbol] = useState<string>('AAPL');
   const [isPaused, setIsPaused] = useState<boolean>(false);
@@ -36,7 +36,7 @@ export default function Home() {
         const nextIndex = (currentIndex + 1) % allSymbols.length;
         return allSymbols[nextIndex];
       });
-    }, 10000); // 10 seconds
+    }, 12000); // 12 seconds bewteen chart updates
 
     return () => clearInterval(interval);
   }, [isPaused]);
@@ -77,9 +77,7 @@ export default function Home() {
         <div className="w-full max-w-5xl h-full">
           {showBoard ? (
             <AssetBoard
-              symbolGroups={[
-                ...symbolsData.symbolGroups
-              ]}
+              symbolGroups={symbolsData.symbolGroups}
               onAssetClick={handleSymbolClick}
             />
           ) : (
